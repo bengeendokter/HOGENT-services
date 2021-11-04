@@ -1,7 +1,7 @@
 const Router = require('@koa/router');
 const dagenService = require('../service/dagen');
 
-const getAllDag = async (ctx) => {
+const getAllDagen = async (ctx) => {
   ctx.body = dagenService.getAll();
   ctx.status = 200;
 };
@@ -34,7 +34,7 @@ module.exports = (app) => {
     prefix: '/dagen',
   });
 
-  router.get('/', getAllDag);
+  router.get('/', getAllDagen);
   router.post('/', createDag);
   router.get('/:id', getDagById);
   router.put('/:id', updateDag);

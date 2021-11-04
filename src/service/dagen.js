@@ -1,54 +1,68 @@
-const { getLogger } = require('../core/logging');
+const {getLogger} = require('../core/logging');
 
-let DAGEN = [{id: 1, user: 'Benjamin', amount: 100, place: 'Irish Pub', date: '2021-08-15' }];
+let DAGEN = [
+    {
+        id: 20211024
+        , aanwezig: 10
+        , afwezig: 10
+    }
+    , {
+        id: 20211031
+        , aanwezig: 9
+        , afwezig: 12
+    }
+];
 
-const debugLog = (message, meta = {}) => {
-  const logger = getLogger();
-  logger.debug(message, meta);
+const debugLog = (message, meta = {}) =>
+{
+    const logger = getLogger();
+    logger.debug(message, meta);
 }
 
-const getAll = () => {
-  debugLog('Fetching all dagen');
-  return DAGEN;
+const getAll = () =>
+{
+    debugLog('Fetching all dagen');
+    return DAGEN;
 };
 
-const getById = (id) => {
-  debugLog(`Fetching dag with id ${id}`);
-  return DAGEN.filter((dag) => dag.id === id)[0];
+const getById = (id) =>
+{
+    debugLog(`Fetching dag with id ${id}`);
+    return DAGEN.filter((dag) => dag.id === id)[0];
 };
 
-const create = ({ amount, date, place, user }) => {
-  const maxId = Math.max(...DAGEN.map(i => i.id));
-  const dag = {id: maxId+1, amount, date, place, user};
-  debugLog('Creating new dag', dag);
-  DAGEN = [...DAGEN, dag];
-  return dag;
+const create = ({id, aanwezig, afwezig}) =>
+{
+    const dag = {id, aanwezig, afwezig};
+    debugLog('Creating new dag', dag);
+    DAGEN = [...DAGEN, dag];
+    return dag;
 };
 
-const updateById = (id, { amount, date, place, user }) => {
-  debugLog(`Updating dag with id ${id}`, { amount, date, place, user });
-  const index = DAGEN.findIndex((dag) => dag.id === id);
+const updateById = (id, {aanwezig, afwezig}) =>
+{
+    debugLog(`Updating dag with id ${id}`, {id, aanwezig, afwezig});
+    const index = DAGEN.findIndex((dag) => id.datum === id);
 
-  if (index < 0) return null;
+    if(index < 0) return null;
 
-  const dagen = DAGEN[index];
-  dagen.amount = amount;
-  dagen.date = date;
-  dagen.place = place;
-  dagen.user = user;
+    const dagen = DAGEN[index];
+    dagen.aanwezig = aanwezig;
+    dagen.afwezig = afwezig;
 
-  return dagen;
+    return dagen;
 };
 
-const deleteById = (id) => {
-  debugLog(`Deleting dag with id ${id}`);
-  DAGEN = DAGEN.filter((dag) => dag.id !== id);
+const deleteById = (datum) =>
+{
+    debugLog(`Deleting dag with id ${id}`);
+    DAGEN = DAGEN.filter((dag) => dag.id !== id);
 };
 
 module.exports = {
-  getAll,
-  getById,
-  create,
-  updateById,
-  deleteById,
+    getAll,
+    getById,
+    create,
+    updateById,
+    deleteById,
 }
