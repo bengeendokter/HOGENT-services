@@ -1,8 +1,9 @@
 const Koa = require('koa');
 const config = require('config');
-const {initializeLogger, getLogger} = require('./core/logging');
 const bodyParser = require('koa-bodyparser');
-const Router = require('@koa/router');
+const {initializeLogger, getLogger} = require('./core/logging');
+
+const installRest = require('./rest');
 
 
 const NODE_ENV = config.get('env');
@@ -20,14 +21,7 @@ const logger = getLogger();
 
 app.use(bodyParser());
 
-app.use(async (ctx, next) =>
-{
-	logger.info(JSON.stringify(ctx.request.body));
-	ctx.body = 'Goodbye world';
-	next();
-});
-
-const router = new Router();
+installRest(app);
 
 logger.info(`🚀 Server listening on http://localhost:9000`);
 app.listen(9000);
