@@ -7,7 +7,7 @@ const getAllDagen = async (ctx) => {
 };
 
 const createDag = async (ctx) => {
-  const newDag = dagenService.create({...ctx.request.body, date: new Date(ctx.request.body.date)});
+  const newDag = dagenService.create({...ctx.request.body});
   ctx.body = newDag;
 };
 
@@ -16,7 +16,7 @@ const getDagById = async (ctx) => {
 };
 
 const updateDag = async (ctx) => {
-  ctx.body = dagenService.updateById(Number(ctx.params.id), {...ctx.request.body, date: new Date(ctx.request.body.date) });
+  ctx.body = dagenService.updateById(Number(ctx.params.id), {...ctx.request.body});
 };
 
 const deleteDag = async (ctx) => {

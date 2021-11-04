@@ -42,7 +42,7 @@ const create = ({id, aanwezig, afwezig}) =>
 const updateById = (id, {aanwezig, afwezig}) =>
 {
     debugLog(`Updating dag with id ${id}`, {id, aanwezig, afwezig});
-    const index = DAGEN.findIndex((dag) => id.datum === id);
+    const index = DAGEN.findIndex((dag) => dag.id === id);
 
     if(index < 0) return null;
 
@@ -53,7 +53,7 @@ const updateById = (id, {aanwezig, afwezig}) =>
     return dagen;
 };
 
-const deleteById = (datum) =>
+const deleteById = (id) =>
 {
     debugLog(`Deleting dag with id ${id}`);
     DAGEN = DAGEN.filter((dag) => dag.id !== id);
