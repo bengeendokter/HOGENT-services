@@ -1,4 +1,7 @@
 const {getLogger} = require('../core/logging');
+const dagenRepository = require('../repository/dag');
+
+// TODO dummy object, verwijder later
 
 let DAGEN = [
     {
@@ -19,10 +22,17 @@ const debugLog = (message, meta = {}) =>
     logger.debug(message, meta);
 }
 
-const getAll = () =>
-{
+const getAll = async (
+	limit = 100,
+	offset = 0,
+) => {
     debugLog('Fetching all dagen');
-    return DAGEN;
+	const data = await dagenRepository.findAll({ limit, offset });
+    return {
+		data,
+		limit,
+		offset
+	};
 };
 
 const getById = (id) =>

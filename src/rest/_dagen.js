@@ -1,8 +1,10 @@
 const Router = require('@koa/router');
 const dagenService = require('../service/dagen');
 
+// TODO await bij alle service calls
+
 const getAllDagen = async (ctx) => {
-  ctx.body = dagenService.getAll();
+  ctx.body = await dagenService.getAll();
   ctx.status = 200;
 };
 
