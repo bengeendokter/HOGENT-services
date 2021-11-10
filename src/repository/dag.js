@@ -5,19 +5,28 @@ const findAll = ({
     offset,
 }) =>
 {
+    const ledenperdatum = getKnex().select(`${tables.dagenleden}.dagid AS datum`
+        , `${tables.dagenleden}.lidid AS lidid`
+        , `${tables.dagenleden}.aanwezig AS aanwezig`)
+        .from(tables.dagenleden)
+        .join(tables.dagen, `${tables.dagenleden}.dagid`, `${tables.dagen}.id`);
 
+    const aanwezig = getKnex().select('datum')
+        .count('datum AS aantal')
+        .from(getKnex().raw(`(${ledenperdatum}) ld`))
+        .where('aanwezig', 1)
+        .groupBy('datum');
 
+    const afwezig = getKnex().select('datum')
+        .count('datum AS aantal')
+        .from(getKnex().raw(`(${ledenperdatum}) ld`))
+        .where('aanwezig', 0)
+        .groupBy('datum');
+    
     return getKnex()
-        .select(`${tables.dagen}.id AS datum`)
-        .count(`${tables.dagenleden}.id AS aanwezig`)
-        .from(tables.dagen)
-        .join(tables.dagenleden, `${tables.dagen}.id`, `${tables.dagenleden}.dagid`)
-        .where(`${tables.dagenleden}.aanwezig`, 1)
-        .groupBy(`${tables.dagen}.id`)
-        .limit(limit)
-		.offset(offset)
-
-        // knex.select('year', knex.raw('SUM(profit)')).from('sales').groupByRaw('year WITH ROLLUP')
+    .select('aan.datum', 'aan.aantal AS aanwezig', 'af.aantal AS afwezig')
+    .from(getKnex().raw(`(${aanwezig}) aan`))
+    .leftOuterJoin(getKnex().raw(`(${afwezig}) af`), 'aan.datum', 'af.datum');
 };
 
 module.exports = {
