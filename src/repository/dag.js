@@ -24,7 +24,7 @@ const findAll = ({
         .groupBy('datum');
     
     return getKnex()
-    .select('aan.datum', 'aan.aantal AS aanwezig', 'af.aantal AS afwezig')
+    .select('aan.datum', 'aan.aantal AS aanwezig', getKnex().raw('ifnull(af.aantal, 0) AS afwezig'))
     .from(getKnex().raw(`(${aanwezig}) aan`))
     .leftOuterJoin(getKnex().raw(`(${afwezig}) af`), 'aan.datum', 'af.datum');
 };
