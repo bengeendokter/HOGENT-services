@@ -26,7 +26,9 @@ const findAll = ({
     return getKnex()
     .select('aan.datum', 'aan.aantal AS aanwezig', getKnex().raw('ifnull(af.aantal, 0) AS afwezig'))
     .from(getKnex().raw(`(${aanwezig}) aan`))
-    .leftOuterJoin(getKnex().raw(`(${afwezig}) af`), 'aan.datum', 'af.datum');
+    .leftOuterJoin(getKnex().raw(`(${afwezig}) af`), 'aan.datum', 'af.datum')
+    .limit(limit)
+    .offset(offset);
 };
 
 module.exports = {
