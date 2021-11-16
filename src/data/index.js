@@ -34,6 +34,9 @@ async function initializeData()
 			tableName: 'knex_meta',
 			directory: join('src', 'data', 'migrations')
 		},
+        seeds: {
+			directory: join('src', 'data', 'seeds')
+		}
     };
 
     knexInstance = knex(knexOptions);
@@ -68,6 +71,16 @@ async function initializeData()
 		}
 
 		throw new Error('Migrations failed');
+	}
+
+    if (isDevelopment) {
+		try {
+			await knexInstance.seed.run();
+		} catch (error) {
+			logger.error('Error while seeding database', {
+				error,
+			});
+		}
 	}
 
     return knexInstance;
