@@ -47,6 +47,7 @@ const create = async ({id}) =>
     debugLog('Creating new dag', dag);
     await dagenRepository.create(dag);
     return dag;
+    // TODO return await dagenRepository.create(dag);
 };
 
 const updateById = (id, {aanwezig, afwezig}) =>

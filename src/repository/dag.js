@@ -1,7 +1,7 @@
 const {tables, getKnex} = require('../data/index');
 const {getLogger} = require('../core/logging');
 
-const findAll = ({
+const findAll = async ({
     limit,
     offset,
 }) =>
@@ -24,7 +24,7 @@ const findAll = ({
         .where('aanwezig', 0)
         .groupBy('datum');
     
-    return getKnex()
+    return await getKnex()
     .distinct('ld.datum', getKnex().raw('ifnull(aan.aantal, 0) AS aanwezig'), getKnex().raw('ifnull(af.aantal, 0) AS afwezig'))
     .from(getKnex().raw(`(${ledenperdatum}) ld`))
     .leftOuterJoin(getKnex().raw(`(${afwezig}) af`), 'ld.datum', 'af.datum')
@@ -33,15 +33,16 @@ const findAll = ({
     .offset(offset);
 };
 
-const create = (dag) =>
+const create = async (dag) =>
 {
-    return getKnex().from(tables.dagen).insert({id: dag.id});
+    await getKnex().from(tables.dagen).insert({id: dag.id});
+    // TODO return await findById(dag.id);
 };
 
-const deleteById = (id) =>
+const deleteById = async (id) =>
 {
-    return getKnex().from(tables.dagenleden).where("dagid", id).del()
-    .then(() => getKnex().from(tables.dagen).where("id", id).del());
+    await getKnex().from(tables.dagen).where("id", id).del();
+    await getKnex().from(tables.dagenleden).where("dagid", id).del();
 };
 
 module.exports = {
