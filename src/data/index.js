@@ -1,5 +1,6 @@
 const knex = require('knex');
 const config = require('config');
+const { join } = require('path');
 
 const {getLogger} = require('../core/logging');
 
@@ -29,6 +30,10 @@ async function initializeData()
             password: DATABASE_PASSWORD,
             insecureAuth: isDevelopment,
         },
+        migrations: {
+			tableName: 'knex_meta',
+			directory: join('src', 'data', 'migrations')
+		},
     };
 
     knexInstance = knex(knexOptions);
@@ -42,6 +47,28 @@ async function initializeData()
         logger.error(error.message, {error});
         throw new Error('Could not initialize the data layer');
     }
+
+    let migrationsFailed = true;
+	try {
+		await knexInstance.migrate.latest();
+		migrationsFailed = false;
+	} catch (error) {
+		logger.error('Error while migrating the database', {
+			error,
+		});
+	}
+
+    if (migrationsFailed) {
+		try {
+			await knexInstance.migrate.down();
+		} catch (error) {
+			logger.error('Error while undoing last migration', {
+				error,
+			});
+		}
+
+		throw new Error('Migrations failed');
+	}
 
     return knexInstance;
 }
