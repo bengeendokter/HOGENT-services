@@ -9,7 +9,7 @@ const getAllDagen = async (ctx) => {
 };
 
 const createDag = async (ctx) => {
-  const newDag = dagenService.create({...ctx.request.body});
+  const newDag = await dagenService.create({...ctx.request.body});
   ctx.body = newDag;
 };
 
@@ -22,7 +22,7 @@ const updateDag = async (ctx) => {
 };
 
 const deleteDag = async (ctx) => {
-  dagenService.deleteById(Number(ctx.params.id));
+  await dagenService.deleteById(Number(ctx.params.id));
   ctx.status = 204;
 }
 

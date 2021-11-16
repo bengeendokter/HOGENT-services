@@ -41,11 +41,11 @@ const getById = (id) =>
     return DAGEN.filter((dag) => dag.id === id)[0];
 };
 
-const create = ({id, aanwezig, afwezig}) =>
+const create = async ({id}) =>
 {
-    const dag = {id, aanwezig, afwezig};
+    const dag = {id: parseInt(id)};
     debugLog('Creating new dag', dag);
-    DAGEN = [...DAGEN, dag];
+    await dagenRepository.create(dag);
     return dag;
 };
 
@@ -63,10 +63,10 @@ const updateById = (id, {aanwezig, afwezig}) =>
     return dagen;
 };
 
-const deleteById = (id) =>
+const deleteById = async (id) =>
 {
     debugLog(`Deleting dag with id ${id}`);
-    DAGEN = DAGEN.filter((dag) => dag.id !== id);
+    await dagenRepository.deleteById(id);
 };
 
 module.exports = {
