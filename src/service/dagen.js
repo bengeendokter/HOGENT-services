@@ -35,6 +35,7 @@ const getAll = async (
 	};
 };
 
+// TODO implementeer met dagenRepository
 const getById = (id) =>
 {
     debugLog(`Fetching dag with id ${id}`);
@@ -50,6 +51,7 @@ const create = async ({id}) =>
     // TODO return await dagenRepository.create(dag);
 };
 
+// TODO implementeer met dagenRepository
 const updateById = (id, {aanwezig, afwezig}) =>
 {
     debugLog(`Updating dag with id ${id}`, {id, aanwezig, afwezig});
