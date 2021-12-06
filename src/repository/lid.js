@@ -5,15 +5,16 @@ const findAll = async ({
     offset,
 }) =>
 {
-    return await getKnex().select().from(`${tables.leden}`)
+    return await getKnex()(tables.leden)
     .limit(limit)
     .offset(offset);
 };
 
-const findById = async (dag) =>
+const findById = async (id) =>
 {
-    await getKnex().from(tables.dagen).insert({id: dag.id});
-    // TODO return await findById(dag.id);
+    return await getKnex()(tables.leden)
+    .where('id', id)
+    .first();
 };
 
 const create = async (dag) =>
