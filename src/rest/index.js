@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const installDagenRouter = require('./_dagen');
+const installLedenRouter = require('./_leden');
 
 /**
  * Install all routes in the given Koa application.
@@ -13,6 +14,7 @@ module.exports = (app) =>
     });
 
     installDagenRouter(router);
+    installLedenRouter(router);
 
     app
         .use(router.routes())
