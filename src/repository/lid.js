@@ -39,8 +39,9 @@ const create = async ({voornaam, achternaam}) =>
 
 const deleteById = async (id) =>
 {
-    await getKnex().from(tables.dagen).where("id", id).del();
-    await getKnex().from(tables.dagenleden).where("dagid", id).del();
+    const rowsAffected = await getKnex()(tables.leden).where("id", id).del();
+    await getKnex()(tables.dagenleden).where("lidid", id).del();
+    return rowsAffected > 0;
 };
 
 module.exports = {
