@@ -1,4 +1,17 @@
 const {tables, getKnex} = require('../data/index');
+const short = require('short-uuid');
+
+const translator = short("0123456789");
+const shortId = async () =>
+{
+    let id = parseInt(translator.new()) % 10_000_000_000;
+    const exists = await findById(id);
+    if(exists)
+    {
+        id = await shortId();
+    }
+    return id;
+};
 
 const findAll = async ({
     limit,
@@ -17,10 +30,11 @@ const findById = async (id) =>
     .first();
 };
 
-const create = async (dag) =>
+const create = async ({voornaam, achternaam}) =>
 {
-    await getKnex().from(tables.dagen).insert({id: dag.id});
-    // TODO return await findById(dag.id);
+    const id = await shortId();
+    await getKnex()(tables.leden).insert({id, voornaam, achternaam});
+    return await findById(id);
 };
 
 const deleteById = async (id) =>

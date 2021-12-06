@@ -11,6 +11,7 @@
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "mysql2": "^2.3.2",
+    "short-uuid": "^4.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
