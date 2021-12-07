@@ -40,7 +40,7 @@ const findByDagidLidid = async (dagid, lidid) =>
     .first();
 };
 
-const create = async ({dagid, lidid, aanwezigheid}) =>
+const create = async ({dagid, lidid, aanwezig}) =>
 {
     // controleer of combinatie dag,lid al bestaad
     const isRegistered = await findByDagidLidid(dagid, lidid);
@@ -51,12 +51,12 @@ const create = async ({dagid, lidid, aanwezigheid}) =>
     }
     // else
     const id = await shortId();
-    await getKnex()(tables.dagenleden).insert({id, dagid, lidid, aanwezigheid});
+    await getKnex()(tables.dagenleden).insert({id, dagid, lidid, aanwezig});
     return await findById(id);
 };
 
 const updateById = async (id, {
-    dagid, lidid, aanwezigheid
+    dagid, lidid, aanwezig
   }) => {
     const isRegistered = await findById(id);
 
@@ -66,7 +66,7 @@ const updateById = async (id, {
     }
 
     await getKnex()(tables.dagenleden)
-    .update({dagid, lidid, aanwezigheid})
+    .update({dagid, lidid, aanwezig})
     .where(`id`, id);
     return await findById(id);
   };

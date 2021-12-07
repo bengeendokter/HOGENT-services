@@ -18,28 +18,29 @@ const createAanwezigheid = async (ctx) =>
   }
   catch(error)
   {
-    ctx.body = error;
+    ctx.body = false;
     ctx.status = 409;
   }
 };
 
 const getAanwezigheidById = async (ctx) =>
 {
-  try
-  {
-    ctx.body = await aanwezighedenService.getById(Number(ctx.params.id));
-    ctx.status = 200;
-  }
-  catch(error)
-  {
-    ctx.body = error;
-    ctx.status = 409;
-  }
+  ctx.body = await aanwezighedenService.getById(Number(ctx.params.id));
+  ctx.status = 200;
 };
 
 const updateAanwezigheid = async (ctx) =>
 {
-  ctx.body = await aanwezighedenService.updateById(ctx.params.id, {...ctx.request.body});
+  try
+  {
+    ctx.body = await aanwezighedenService.updateById(ctx.params.id, {...ctx.request.body});
+    ctx.status = 200;
+  }
+  catch(error)
+  {
+    ctx.body = false;
+    ctx.status = 409;
+  }
 };
 
 const deleteAanwezigheid = async (ctx) =>

@@ -34,37 +34,37 @@ const getById = async (id) =>
     return await aanwezigheidRepository.findById(id);
 };
 
-const create = async ({dagid, lidid, aanwezigheid}) =>
+const create = async ({dagid, lidid, aanwezig}) =>
 {
-    debugLog('Creating new aanwezigheid', {dagid, lidid, aanwezigheid});
+    debugLog('Creating new aanwezigheid', {dagid, lidid, aanwezig});
     try
     {
-        const aanwezigheid = await aanwezigheidRepository.create({dagid, lidid, aanwezigheid});
+        const newAanwezigheid = await aanwezigheidRepository.create({dagid, lidid, aanwezig});
+        return newAanwezigheid;
     }
     catch(error)
     {
-        errorLog(`Aanwezigheid with dagid ${dagid} and ${lidid} already exists`)
+        errorLog(`Aanwezigheid with dagid ${dagid} and lidid ${lidid} already exists or the given dag or lid doesn't exist`)
         throw (error)
-    }
-    return aanwezigheid;
+    };
 };
 
-const updateById = async (id, {dagid, lidid, aanwezigheid}) =>
+const updateById = async (id, {dagid, lidid, aanwezig}) =>
 {
     debugLog(`Updating transaction with id ${id}`, {
-        dagid, lidid, aanwezigheid
+        dagid, lidid, aanwezig
     });
 
     try
     {
-        const aanwezigheid = await aanwezigheidRepository.updateById(id, {dagid, lidid, aanwezigheid});
+        const newAanwezigheid = await aanwezigheidRepository.updateById(id, {dagid, lidid, aanwezig});
+        return newAanwezigheid;
     }
     catch(error)
     {
         errorLog(`Aanwezigheid with id ${id} doesn't exists`)
         throw (error)
-    }
-    return aanwezigheid;
+    };
 };
 
 const deleteById = async (id) =>
