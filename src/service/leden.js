@@ -26,9 +26,8 @@ const getById = async (id) =>
     return await ledenRepository.findById(id);
 };
 
-const create = async ({id, ...rest}) =>
+const create = async (lid) =>
 {
-    const lid = {id: parseInt(id), ...rest};
     debugLog('Creating new lid', lid);
     return await ledenRepository.create(lid);
 };
