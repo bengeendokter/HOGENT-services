@@ -4,7 +4,7 @@ const short = require('short-uuid');
 const translator = short("0123456789");
 const shortId = async () =>
 {
-    let id = parseInt(translator.new()) % 10_000_000_000;
+    let id = parseInt(translator.new()) % 1_000_000_000;
     const exists = await findById(id);
     if(exists)
     {
@@ -13,56 +13,67 @@ const shortId = async () =>
     return id;
 };
 
-const findAll = async ({
+const findAll = async (dagid, {
     limit,
     offset,
 }) =>
 {
-    return await getKnex()(tables.leden)
+    return await getKnex()(tables.dagenleden)
+    .where('dagid', dagid)
     .limit(limit)
     .offset(offset);
 };
 
 const findById = async (id) =>
 {
-    return await getKnex()(tables.leden)
+    return await getKnex()(tables.dagenleden)
     .where('id', id)
     .first();
 };
 
-const create = async ({voornaam, achternaam}) =>
+// hulpfunctie
+const findByDagidLidid = async (dagid, lidid) =>
 {
+    return await getKnex()(tables.dagenleden)
+    .where('dagid', dagid)
+    .andWhere('lidid', lidid)
+    .first();
+};
+
+const create = async ({dagid, lidid, aanwezigheid}) =>
+{
+    // controleer of combinatie dag,lid al bestaad
+    const isRegistered = await findByDagidLidid(dagid, lidid);
+
+    if(isRegistered)
+    {
+        throw Error("Lid is registered");
+    }
+    // else
     const id = await shortId();
-    await getKnex()(tables.leden).insert({id, voornaam, achternaam});
+    await getKnex()(tables.dagenleden).insert({id, dagid, lidid, aanwezigheid});
     return await findById(id);
 };
 
 const updateById = async (id, {
     dagid, lidid, aanwezigheid
   }) => {
-    // try {
-    //   await getKnex()(tables.transaction)
-    //     .update({
-    //       amount,
-    //       date,
-    //       place_id: placeId,
-    //       user_id: userId,
-    //     })
-    //     .where(`${tables.transaction}.id`, id);
-    //   return await findById(id);
-    // } catch (error) {
-    //   const logger = getChildLogger('transactions-repo');
-    //   logger.error('Error in updateById', {
-    //     error,
-    //   });
-    //   throw error;
-    // }
+    const isRegistered = await findById(id);
+
+    if(!isRegistered)
+    {
+        throw Error("Lid is not registered");
+    }
+
+    await getKnex()(tables.dagenleden)
+    .update({dagid, lidid, aanwezigheid})
+    .where(`id`, id);
+    return await findById(id);
   };
 
 const deleteById = async (id) =>
 {
-    const rowsAffected = await getKnex()(tables.leden).where("id", id).del();
-    await getKnex()(tables.dagenleden).where("lidid", id).del();
+    const rowsAffected = await getKnex()(tables.dagenleden).where("id", id).del();
     return rowsAffected > 0;
 };
 

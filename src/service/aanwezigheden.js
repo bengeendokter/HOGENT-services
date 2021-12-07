@@ -7,13 +7,20 @@ const debugLog = (message, meta = {}) =>
     logger.debug(message, meta);
 }
 
+const errorLog = (message, meta = {}) =>
+{
+    const logger = getLogger();
+    logger.error(message, meta);
+}
+
 const getAll = async (
+    dagid,
     limit = 100,
     offset = 0,
 ) =>
 {
-    debugLog('Fetching all aanwezigheden');
-    const data = await aanwezigheidRepository.findAll({limit, offset});
+    debugLog(`Fetching all aanwezigheden op dag ${dagid}`);
+    const data = await aanwezigheidRepository.findAll(dagid, {limit, offset});
     return {
         data,
         limit,
@@ -27,10 +34,19 @@ const getById = async (id) =>
     return await aanwezigheidRepository.findById(id);
 };
 
-const create = async (lid) =>
+const create = async ({dagid, lidid, aanwezigheid}) =>
 {
-    debugLog('Creating new aanwezigheid', lid);
-    return await aanwezigheidRepository.create(lid);
+    debugLog('Creating new aanwezigheid', {dagid, lidid, aanwezigheid});
+    try
+    {
+        const aanwezigheid = await aanwezigheidRepository.create({dagid, lidid, aanwezigheid});
+    }
+    catch(error)
+    {
+        errorLog(`Aanwezigheid with dagid ${dagid} and ${lidid} already exists`)
+        throw (error)
+    }
+    return aanwezigheid;
 };
 
 const updateById = async (id, {dagid, lidid, aanwezigheid}) =>
@@ -39,9 +55,16 @@ const updateById = async (id, {dagid, lidid, aanwezigheid}) =>
         dagid, lidid, aanwezigheid
     });
 
-    return await aanwezigheidRepository.updateById(id, {
-        dagid, lidid, aanwezigheid
-    });
+    try
+    {
+        const aanwezigheid = await aanwezigheidRepository.updateById(id, {dagid, lidid, aanwezigheid});
+    }
+    catch(error)
+    {
+        errorLog(`Aanwezigheid with id ${id} doesn't exists`)
+        throw (error)
+    }
+    return aanwezigheid;
 };
 
 const deleteById = async (id) =>

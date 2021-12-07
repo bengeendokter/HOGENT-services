@@ -5,20 +5,36 @@ const getAllAanwezigheden = async (ctx) =>
 {
   const limit = ctx.query.limit && Number(ctx.query.limit);
   const offset = ctx.query.offset && Number(ctx.query.offset);
-  ctx.body = await aanwezighedenService.getAll(limit, offset);
+  ctx.body = await aanwezighedenService.getAll(Number(ctx.params.dagid), limit, offset);
   ctx.status = 200;
 };
 
 const createAanwezigheid = async (ctx) =>
 {
-  ctx.body = await aanwezighedenService.create({...ctx.request.body});
-  ctx.status = 201;
+  try
+  {
+    ctx.body = await aanwezighedenService.create({...ctx.request.body});
+    ctx.status = 201;
+  }
+  catch(error)
+  {
+    ctx.body = error;
+    ctx.status = 409;
+  }
 };
 
 const getAanwezigheidById = async (ctx) =>
 {
-  ctx.body = await aanwezighedenService.getById(Number(ctx.params.id));
-  ctx.status = 200;
+  try
+  {
+    ctx.body = await aanwezighedenService.getById(Number(ctx.params.id));
+    ctx.status = 200;
+  }
+  catch(error)
+  {
+    ctx.body = error;
+    ctx.status = 409;
+  }
 };
 
 const updateAanwezigheid = async (ctx) =>
@@ -36,10 +52,10 @@ const deleteAanwezigheid = async (ctx) =>
 module.exports = (app) =>
 {
   const router = new Router({
-    prefix: '/leden',
+    prefix: '/aanwezigheden',
   });
 
-  router.get('/', getAllAanwezigheden);
+  router.get('/dag/:dagid', getAllAanwezigheden);
   router.post('/', createAanwezigheid);
   router.get('/:id', getAanwezigheidById);
   router.put('/:id', updateAanwezigheid);

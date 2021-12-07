@@ -26,10 +26,10 @@ const getById = async (id) =>
     return await ledenRepository.findById(id);
 };
 
-const create = async (lid) =>
+const create = async ({voornaam, achternaam}) =>
 {
-    debugLog('Creating new lid', lid);
-    return await ledenRepository.create(lid);
+    debugLog('Creating new lid', {voornaam, achternaam});
+    return await ledenRepository.create({voornaam, achternaam});
 };
 
 const deleteById = async (id) =>
