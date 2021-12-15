@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const aanwezighedenService = require('../service/aanwezigheden');
+const {requireAuthentication} = require('../core/auth');
 
 const getAllAanwezigheden = async (ctx) =>
 {
@@ -56,11 +57,11 @@ module.exports = (app) =>
     prefix: '/aanwezigheden',
   });
 
-  router.get('/dag/:dagid', getAllAanwezigheden);
-  router.post('/', createAanwezigheid);
-  router.get('/:id', getAanwezigheidById);
-  router.put('/:id', updateAanwezigheid);
-  router.delete('/:id', deleteAanwezigheid);
+  router.get('/dag/:dagid', requireAuthentication, getAllAanwezigheden);
+  router.post('/', requireAuthentication, createAanwezigheid);
+  router.get('/:id', requireAuthentication, getAanwezigheidById);
+  router.put('/:id', requireAuthentication, updateAanwezigheid);
+  router.delete('/:id', requireAuthentication, deleteAanwezigheid);
 
   app
     .use(router.routes())

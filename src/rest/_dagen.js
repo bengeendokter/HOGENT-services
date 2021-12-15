@@ -47,10 +47,12 @@ module.exports = (app) =>
   router.get('/',
     requireAuthentication,
     getAllDagen);
-  router.post('/', createDag);
-  router.get('/:id', getDagById);
-  router.put('/:id', updateDag);
-  router.delete('/:id', deleteDag);
+  router.post('/',
+    requireAuthentication,
+    createDag);
+  router.get('/:id', requireAuthentication, getDagById);
+  router.put('/:id', requireAuthentication, updateDag);
+  router.delete('/:id', requireAuthentication, deleteDag);
 
   app
     .use(router.routes())

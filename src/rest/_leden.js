@@ -1,7 +1,8 @@
 const Router = require('@koa/router');
 const ledenService = require('../service/leden');
+const {requireAuthentication} = require('../core/auth');
 
-const getAllDagen = async (ctx) =>
+const getAllLeden = async (ctx) =>
 {
   const limit = ctx.query.limit && Number(ctx.query.limit);
   const offset = ctx.query.offset && Number(ctx.query.offset);
@@ -9,19 +10,19 @@ const getAllDagen = async (ctx) =>
   ctx.status = 200;
 };
 
-const createDag = async (ctx) =>
+const createLid = async (ctx) =>
 {
   ctx.body = await ledenService.create({...ctx.request.body});
   ctx.status = 201;
 };
 
-const getDagById = async (ctx) =>
+const getLidById = async (ctx) =>
 {
   ctx.body = await ledenService.getById(Number(ctx.params.id));
   ctx.status = 200;
 };
 
-const deleteDag = async (ctx) =>
+const deleteLid = async (ctx) =>
 {
   ctx.body = await ledenService.deleteById(Number(ctx.params.id));
   ctx.status = 200;
@@ -34,10 +35,10 @@ module.exports = (app) =>
     prefix: '/leden',
   });
 
-  router.get('/', getAllDagen);
-  router.post('/', createDag);
-  router.get('/:id', getDagById);
-  router.delete('/:id', deleteDag);
+  router.get('/', requireAuthentication, getAllLeden);
+  router.post('/', requireAuthentication, createLid);
+  router.get('/:id', requireAuthentication, getLidById);
+  router.delete('/:id', requireAuthentication, deleteLid);
 
   app
     .use(router.routes())
