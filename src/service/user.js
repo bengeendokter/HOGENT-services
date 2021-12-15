@@ -11,6 +11,12 @@ const debugLog = (message, meta = {}) =>
   this.logger.debug(message, meta);
 };
 
+const errorLog = (message, meta = {}) =>
+{
+  if(!this.logger) this.logger = getChildLogger('user-service');
+  this.logger.error(message, meta);
+}
+
 /**
  * Only return the public information about the given user.
  */
@@ -49,12 +55,14 @@ const makeLoginData = async (user) =>
  */
 const login = async (email, password) =>
 {
+  debugLog(`Login in ${email}`);
   const user = await userRepository.findByEmail(email);
 
   if(!user)
   {
     // DO NOT expose we don't know the user
-    throw ServiceError.unauthorized('The given email and password do not match');
+    errorLog('The given email and password do not match');
+    return false;
   }
 
   const passwordValid = await verifyPassword(password, user.password_hash);
@@ -62,7 +70,8 @@ const login = async (email, password) =>
   if(!passwordValid)
   {
     // DO NOT expose we know the user but an invalid password was given
-    throw ServiceError.unauthorized('The given email and password do not match');
+    errorLog('The given email and password do not match');
+    return false;
   }
 
   return await makeLoginData(user);
