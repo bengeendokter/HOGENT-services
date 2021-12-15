@@ -15,4 +15,17 @@ module.exports = {
 		username: 'root',
 		password: 'root',
 	},
+	auth: {
+		argon: {
+			saltLength: 16,
+			hashLength: 32,
+			timeCost: 6,
+			memoryCost: 2 ** 17,
+		},
+		jwt: {
+			secret: 'ditisnogeenveeltemoeilijkteradensecretdushopelijkisdesitenuveilig',
+			expirationInterval: 3 * 24 * 60 * 60 * 1000, // ms (3 days)
+			issuer: 'aanwezigheden.app',
+		},
+	},
 };

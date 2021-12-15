@@ -1,6 +1,6 @@
 const knex = require('knex');
 const config = require('config');
-const { join } = require('path');
+const {join} = require('path');
 
 const {getLogger} = require('../core/logging');
 
@@ -31,12 +31,12 @@ async function initializeData()
             insecureAuth: isDevelopment,
         },
         migrations: {
-			tableName: 'knex_meta',
-			directory: join('src', 'data', 'migrations')
-		},
+            tableName: 'knex_meta',
+            directory: join('src', 'data', 'migrations')
+        },
         seeds: {
-			directory: join('src', 'data', 'seeds')
-		}
+            directory: join('src', 'data', 'seeds')
+        }
     };
 
     knexInstance = knex(knexOptions);
@@ -52,36 +52,44 @@ async function initializeData()
     }
 
     let migrationsFailed = true;
-	try {
-		await knexInstance.migrate.latest();
-		migrationsFailed = false;
-	} catch (error) {
-		logger.error('Error while migrating the database', {
-			error,
-		});
-	}
+    try
+    {
+        await knexInstance.migrate.latest();
+        migrationsFailed = false;
+    } catch(error)
+    {
+        logger.error('Error while migrating the database', {
+            error,
+        });
+    }
 
-    if (migrationsFailed) {
-		try {
-			await knexInstance.migrate.down();
-		} catch (error) {
-			logger.error('Error while undoing last migration', {
-				error,
-			});
-		}
+    if(migrationsFailed)
+    {
+        try
+        {
+            await knexInstance.migrate.down();
+        } catch(error)
+        {
+            logger.error('Error while undoing last migration', {
+                error,
+            });
+        }
 
-		throw new Error('Migrations failed');
-	}
+        throw new Error('Migrations failed');
+    }
 
-    if (isDevelopment) {
-		try {
-			await knexInstance.seed.run();
-		} catch (error) {
-			logger.error('Error while seeding database', {
-				error,
-			});
-		}
-	}
+    if(isDevelopment)
+    {
+        try
+        {
+            await knexInstance.seed.run();
+        } catch(error)
+        {
+            logger.error('Error while seeding database', {
+                error,
+            });
+        }
+    }
 
     return knexInstance;
 }
@@ -93,9 +101,10 @@ function getKnex()
 }
 
 const tables = Object.freeze({
-	dagen: 'dag',
-	leden: 'lid',
+    dagen: 'dag',
+    leden: 'lid',
     dagenleden: 'daglid',
+    user: 'users',
 });
 
 module.exports = {

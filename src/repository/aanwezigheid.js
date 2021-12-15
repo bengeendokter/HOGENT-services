@@ -13,6 +13,7 @@ const shortId = async () =>
     return id;
 };
 
+// TODO join met lid voor voornaam en achternaam
 const findAll = async (dagid, {
     limit,
     offset,

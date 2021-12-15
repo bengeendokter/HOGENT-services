@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const dagenService = require('../service/dagen');
+const { requireAuthentication } = require('../core/auth');
 
 // TODO await bij alle service calls
 const getAllDagen = async (ctx) => {
@@ -37,7 +38,9 @@ module.exports = (app) => {
     prefix: '/dagen',
   });
 
-  router.get('/', getAllDagen);
+  router.get('/',
+  // requireAuthentication,
+  getAllDagen);
   router.post('/', createDag);
   router.get('/:id', getDagById);
   router.put('/:id', updateDag);
