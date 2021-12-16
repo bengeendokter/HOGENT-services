@@ -1,6 +1,11 @@
 {
+  "jest": {
+    "testPathIgnorePatterns": ["src", "node_modules", "config"]
+  },
   "scripts": {
     "start": "npx env-cmd nodemon src/index.js",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
     "test:ci": "jest"
   },
   "dependencies": {
