@@ -122,9 +122,9 @@ async function main()
   });
 
 	installRest(app);
-
-	logger.info(`🚀 Server listening on http://localhost:9000`);
-	app.listen(9000);
+  const port = process.env.PORT || 9000;
+	logger.info(`🚀 Server listening on http://localhost:${port}`);
+	app.listen(port);
 };
 
 main();

@@ -4,6 +4,7 @@
   },
   "scripts": {
     "start": "npx env-cmd nodemon src/index.js",
+    "web": "node src/index.js",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
     "test:ci": "jest"
