@@ -14,9 +14,13 @@ const cleanupJoiError = (error) => error.details.reduce((resultObj, {
   type,
 }) => {
   const joinedPath = path.join('.') || 'value';
+  
+  // resultObj[joinedPath] ??= [];
+  // lijn hierboven betekend:
   if (!resultObj[joinedPath]) {
     resultObj[joinedPath] = [];
   }
+
   resultObj[joinedPath].push({
     type,
     message,
