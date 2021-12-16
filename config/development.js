@@ -11,9 +11,7 @@ module.exports = {
 		client: 'mysql2',
 		host: 'localhost',
 		port: 3306,
-		name: 'aanwezigheden',
-		username: 'root',
-		password: 'root',
+
 	},
 	auth: {
 		argon: {
@@ -23,7 +21,6 @@ module.exports = {
 			memoryCost: 2 ** 17,
 		},
 		jwt: {
-			secret: 'ditisnogeenveeltemoeilijkteradensecretdushopelijkisdesitenuveilig',
 			expirationInterval: 60 * 60 * 1000, // ms (1 hour)
 			issuer: 'aanwezigheden.app',
 			audience: 'aanwezigheden.app',

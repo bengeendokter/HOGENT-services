@@ -12,8 +12,6 @@ module.exports = {
 		host: 'localhost',
 		port: 3306,
 		name: 'aanwezigheden',
-		username: 'root',
-		password: 'root',
 	},
 	auth: {
 		argon: {
