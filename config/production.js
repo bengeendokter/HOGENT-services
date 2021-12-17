@@ -21,9 +21,9 @@ module.exports = {
 			memoryCost: 2 ** 17,
 		},
 		jwt: {
-			secret: 'ditisnogeenveeltemoeilijkteradensecretdushopelijkisdesitenuveilig',
 			expirationInterval: 3 * 24 * 60 * 60 * 1000, // ms (3 days)
 			issuer: 'aanwezigheden.app',
+			audience: 'aanwezigheden.app',
 		},
 	},
 };
