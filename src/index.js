@@ -35,6 +35,7 @@ async function main()
 		koaCors({
 			origin: (ctx) => {
 				if (CORS_ORIGINS.indexOf(ctx.request.header.origin) !== -1) {
+          logger.info(`${emoji.get('x')} blocked request from origin ${ctx.request.header.origin}`);
 					return ctx.request.header.origin;
 				}
 				// Not a valid domain at this point, let's return the first valid as we should return a string
@@ -48,7 +49,6 @@ async function main()
 	app.use(bodyParser());
 
   app.use(async (ctx, next) => {
-    const logger = getLogger();
     logger.info(`${emoji.get('fast_forward')} ${ctx.method} ${ctx.url}`);
 
     const getStatusEmoji = () => {
