@@ -4,7 +4,7 @@ module.exports = {
 		disabled: false,
 	},
 	cors: {
-		origins: ['https://aanwezigheden.netlify.app', 'http://localhost:3000'],
+		origins: ['https://hogent-web.github.io', 'https://aanwezigheden.netlify.app', 'http://localhost:3000'],
 		maxAge: 3 * 60 * 60,
 	},
 	database: {
