@@ -19,7 +19,14 @@ const findAll = async (dagid, {
     offset,
 }) =>
 {
-    return await getKnex()(tables.dagenleden)
+    return await getKnex().select(`${tables.dagenleden}.id`
+    , `${tables.dagenleden}.dagid`
+    , `${tables.dagenleden}.lidid`
+    , `${tables.leden}.voornaam`
+    , `${tables.leden}.achternaam`
+    , `${tables.dagenleden}.aanwezig`)
+    .from(tables.dagenleden)
+    .leftOuterJoin(tables.leden, `${tables.dagenleden}.lidid`, `${tables.leden}.id`)
     .where('dagid', dagid)
     .limit(limit)
     .offset(offset);
@@ -27,8 +34,15 @@ const findAll = async (dagid, {
 
 const findById = async (id) =>
 {
-    return await getKnex()(tables.dagenleden)
-    .where('id', id)
+    return await getKnex().select(`${tables.dagenleden}.id`
+    , `${tables.dagenleden}.dagid`
+    , `${tables.dagenleden}.lidid`
+    , `${tables.leden}.voornaam`
+    , `${tables.leden}.achternaam`
+    , `${tables.dagenleden}.aanwezig`)
+    .from(tables.dagenleden)
+    .leftOuterJoin(tables.leden, `${tables.dagenleden}.lidid`, `${tables.leden}.id`)
+    .where(`${tables.dagenleden}.id`, id)
     .first();
 };
 
