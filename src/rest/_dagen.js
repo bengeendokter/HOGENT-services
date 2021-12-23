@@ -1,6 +1,8 @@
 const Router = require('@koa/router');
 const dagenService = require('../service/dagen');
 const {requireAuthentication} = require('../core/auth');
+const Joi = require('joi');
+const validate = require('./_validation')
 
 // TODO await bij alle service calls
 const getAllDagen = async (ctx) =>
@@ -10,6 +12,15 @@ const getAllDagen = async (ctx) =>
   ctx.body = await dagenService.getAll(limit, offset);
   ctx.status = 200;
 };
+
+getAllDagen.validationScheme =
+{ query:
+  Joi.object({
+    limit: Joi.number().integer().positive().max(1000).optional()
+    , offset: Joi.number().integer().min(0).optional()
+  }).and("limit", "offset")
+}
+  ;
 
 const createDag = async (ctx) =>
 {
@@ -54,6 +65,7 @@ module.exports = (app) =>
 
   router.get('/',
     requireAuthentication,
+    validate(getAllDagen.validationScheme),
     getAllDagen);
   router.post('/',
     requireAuthentication,

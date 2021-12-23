@@ -26,7 +26,7 @@ module.exports.login = async (supertest) =>
 {
     const response = await supertest.post('/api/users/login')
         .send({
-            email: 'test.user@hogent.be',
+            email: 'pieter.vanderhelst@hogent.be',
             password: '12345678',
         });
 
@@ -42,7 +42,7 @@ module.exports.loginAdmin = async (supertest) =>
 {
     const response = await supertest.post('/api/users/login')
         .send({
-            email: 'admin.user@hogent.be',
+            email: 'ben.arts@hogent.be',
             password: '12345678',
         });
 

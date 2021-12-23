@@ -1,6 +1,8 @@
 const Router = require('@koa/router');
 const ledenService = require('../service/leden');
 const {requireAuthentication} = require('../core/auth');
+const Joi = require('joi');
+const validate = require('./_validation')
 
 const getAllLeden = async (ctx) =>
 {
@@ -9,6 +11,15 @@ const getAllLeden = async (ctx) =>
   ctx.body = await ledenService.getAll(limit, offset);
   ctx.status = 200;
 };
+
+getAllLeden.validationScheme =
+{ query:
+  Joi.object({
+    limit: Joi.number().integer().positive().max(1000).optional()
+    , offset: Joi.number().integer().min(0).optional()
+  }).and("limit", "offset")
+}
+  ;
 
 const createLid = async (ctx) =>
 {
@@ -25,7 +36,7 @@ const getLidById = async (ctx) =>
 const deleteLid = async (ctx) =>
 {
   ctx.body = await ledenService.deleteById(Number(ctx.params.id));
-  ctx.status = 200;
+  ctx.status = 204;
 }
 
 
@@ -35,7 +46,8 @@ module.exports = (app) =>
     prefix: '/leden',
   });
 
-  router.get('/', requireAuthentication, getAllLeden);
+  router.get('/', requireAuthentication,
+  validate(getAllLeden.validationScheme), getAllLeden);
   router.post('/', requireAuthentication, createLid);
   router.get('/:id', requireAuthentication, getLidById);
   router.delete('/:id', requireAuthentication, deleteLid);

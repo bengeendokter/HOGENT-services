@@ -58,7 +58,7 @@ const updateAanwezigheid = async (ctx) =>
 const deleteAanwezigheid = async (ctx) =>
 {
   ctx.body = await aanwezighedenService.deleteById(Number(ctx.params.id));
-  ctx.status = 200;
+  ctx.status = 204;
 }
 
 
