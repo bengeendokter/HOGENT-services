@@ -13,8 +13,16 @@ const getAllDagen = async (ctx) =>
 
 const createDag = async (ctx) =>
 {
-  const newDag = await dagenService.create({...ctx.request.body});
-  ctx.body = newDag;
+  try
+  {
+    ctx.body = await dagenService.create({...ctx.request.body});
+    ctx.status = 201;
+  }
+  catch(error)
+  {
+    ctx.body = false;
+    ctx.status = 409;
+  }
 };
 
 const getDagById = async (ctx) =>
