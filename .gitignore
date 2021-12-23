@@ -6,3 +6,5 @@ node_modules/
 
 # vs code
 .vscode
+
+__tests__/coverage
