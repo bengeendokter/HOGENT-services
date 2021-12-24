@@ -11,7 +11,7 @@ Voor een JWT token te ontvangen stuurt men een `POST` inlog request naar `https:
 Ook kan de online versie geraadpleegt worden via de [frontend op Netlify](https://aanwezigheden.netlify.app/).
 ## Lokale versie
 
-Om een lokale versie van de API voert men na het clonen van de repository eerst volgend commando uit om alle packages te intaleren:
+Voor een lokale versie van de API voert men na het clonen van de repository eerst volgend commando uit om alle packages te intaleren:
 ```
 yarn install
 ```
