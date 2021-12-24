@@ -1,22 +1,22 @@
 # Het project opstarten
 
 ## Online versie
-Deze web applicatie is online te vinden op [online te vinden op Netlify](https://aanwezigheden.netlify.app/).
+Deze API draait online via heroku op `https://aanwezigheden.herokuapp.com/api/`
 
-De inlog gegevens voor de authenticatie zijn:
+Voor een JWT token te ontvangen stuurt men een `POST` inlog request naar `https://aanwezigheden.herokuapp.com/api/users/login` met volgende body:
 ```
-ben.arts@hogent.be
-12345678
+{"email":"ben.arts@hogent.be", "password":"12345678"}
 ```
 
+Ook kan de online versie geraadpleegt worden via de [frontend op Netlify](https://aanwezigheden.netlify.app/).
 ## Lokale versie
 
-Om een lokale versie van de applicatie voert men na het clonen van de repository eerst volgend commando uit om alle packages te intaleren:
+Om een lokale versie van de API voert men na het clonen van de repository eerst volgend commando uit om alle packages te intaleren:
 ```
 yarn install
 ```
 
-Ook zal men een mySQL server nodig hebben en een `.env` file die er als volgt moet uitzien:
+Ook zal men een `mySQL database` nodig hebben en een `.env` file die er als volgt moet uitzien:
 
 ```
 NODE_ENV=development
@@ -34,18 +34,10 @@ Indien de vorige stappen goed uitgevoert zijn kan men een lokale versie draaien 
 yarn start
 ```
 
-De web app draait nu op [http://localhost:3000](http://localhost:3000) en kan in de browser bekeken worden.
+De API draait nu op [http://localhost:9000](http://localhost:9000) en kan in de browser bekeken worden.
 
-### Lokale PWA
-Om het PWA aspect van de web app lokaal te testen moet er een build worden gemaakt, dit kan via:
-```
-yarn build
-```
+Ook hier kan men toegang krijgen via dezelfde inlog gegevens als de online versie.
 
-Een lokale versie kan dan opgestart worden via:
-```
-yarn serve build
-```
 ### Testen
 De testen kunnen uitgevoert worden via:
 ```
